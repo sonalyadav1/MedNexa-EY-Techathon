@@ -1,7 +1,7 @@
 import pandas as pd
-from datetime import datetime
-from typing import Dict, Any, List
+from typing import Dict, Any
 from pathlib import Path
+from contracts.schemas import AgentOutput
 
 
 DATA_FILE = Path(__file__).parent.parent / "data" / "exim_data.csv"
@@ -14,7 +14,6 @@ def load_exim_data() -> pd.DataFrame:
 def process(query_context: Dict[str, Any]) -> Dict[str, Any]:
     entities = query_context.get("extracted_entities", {})
     drug_name = entities.get("drug_name", "Drug X")
-    regions = entities.get("regions", ["US", "EU", "APAC"])
     
     df = load_exim_data()
     
@@ -31,16 +30,15 @@ def process(query_context: Dict[str, Any]) -> Dict[str, Any]:
     
     top_exporters = ["India", "China"]
     
-    output = {
-        "agent": "exim",
-        "data": {
+    output = AgentOutput(
+        agent="exim",
+        data={
             "import_volume_kg": total_import,
             "export_volume_kg": total_export,
             "top_exporters": top_exporters,
             "tariff_impact_pct": round(avg_tariff, 4),
             "trade_barriers": barriers if barriers else ["None identified"]
-        },
-        "timestamp": datetime.now().isoformat()
-    }
+        }
+    )
     
-    return output
+    return output.model_dump()

@@ -1,7 +1,7 @@
 import json
-from datetime import datetime
 from typing import Dict, Any
 from pathlib import Path
+from contracts.schemas import AgentOutput
 
 
 DATA_FILE = Path(__file__).parent.parent / "data" / "clinical_trials_data.json"
@@ -29,9 +29,9 @@ def process(query_context: Dict[str, Any]) -> Dict[str, Any]:
     
     trials = drug_data.get("trials", {})
     
-    output = {
-        "agent": "clinical_trials",
-        "data": {
+    output = AgentOutput(
+        agent="clinical_trials",
+        data={
             "total_trials": drug_data.get("total_trials", 0),
             "phase_distribution": {
                 "phase_1": trials.get("phase_1", 0),
@@ -41,8 +41,7 @@ def process(query_context: Dict[str, Any]) -> Dict[str, Any]:
             },
             "completion_rate": drug_data.get("completion_rate", 0),
             "competitive_trials": drug_data.get("competitive_trials", 0)
-        },
-        "timestamp": datetime.now().isoformat()
-    }
+        }
+    )
     
-    return output
+    return output.model_dump()

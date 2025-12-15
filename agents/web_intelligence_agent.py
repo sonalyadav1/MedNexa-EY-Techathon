@@ -1,7 +1,7 @@
 import json
-from datetime import datetime
 from typing import Dict, Any
 from pathlib import Path
+from contracts.schemas import AgentOutput
 
 
 DATA_FILE = Path(__file__).parent.parent / "data" / "web_intelligence.json"
@@ -27,15 +27,14 @@ def process(query_context: Dict[str, Any]) -> Dict[str, Any]:
     if not drug_data:
         drug_data = raw_data["drugs"][0] if raw_data.get("drugs") else {}
     
-    output = {
-        "agent": "web_intelligence",
-        "data": {
+    output = AgentOutput(
+        agent="web_intelligence",
+        data={
             "sentiment_score": drug_data.get("sentiment", 0),
             "news_mentions": drug_data.get("news_count", 0),
             "regulatory_updates": drug_data.get("regulatory", []),
             "market_rumors": drug_data.get("rumors", [])
-        },
-        "timestamp": datetime.now().isoformat()
-    }
+        }
+    )
     
-    return output
+    return output.model_dump()

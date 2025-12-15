@@ -1,9 +1,9 @@
-from datetime import datetime
 from typing import Dict, Any
 from langgraph.graph import StateGraph, END
 from langgraph.graph.state import CompiledStateGraph
 
 from orchestration.state import AgentState
+from contracts.schemas import AggregatedData
 from agents.master_agent import parse_query
 from agents import (
     iqvia_agent,
@@ -77,11 +77,11 @@ def web_intelligence_node(state: AgentState) -> AgentState:
 
 def aggregator_node(state: AgentState) -> AgentState:
     print("[Aggregator] Consolidating worker results...")
-    state["aggregated_data"] = {
-        "query_context": state["query_context"],
-        "worker_results": state["worker_results"],
-        "aggregation_timestamp": datetime.now().isoformat()
-    }
+    aggregated = AggregatedData(
+        query_context=state["query_context"],
+        worker_results=state["worker_results"]
+    )
+    state["aggregated_data"] = aggregated.model_dump()
     return state
 
 

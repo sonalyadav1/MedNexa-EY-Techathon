@@ -80,10 +80,10 @@ def generate_pdf(summary: str, aggregated_data: Dict[str, Any]) -> str:
     
     elements.append(Paragraph("Query Information", styles['SectionHeader']))
     query_text = query_context.get("original_query", "N/A")
-    elements.append(Paragraph(f"<b>Query:</b> {query_text}", styles['BodyText']))
-    elements.append(Paragraph(f"<b>Drug:</b> {entities.get('drug_name', 'N/A')}", styles['BodyText']))
-    elements.append(Paragraph(f"<b>Therapeutic Area:</b> {entities.get('therapeutic_area', 'N/A')}", styles['BodyText']))
-    elements.append(Paragraph(f"<b>Regions:</b> {', '.join(entities.get('regions', []))}", styles['BodyText']))
+    elements.append(Paragraph(f"<b>Query:</b> {query_text}", styles['ReportBody']))
+    elements.append(Paragraph(f"<b>Drug:</b> {entities.get('drug_name', 'N/A')}", styles['ReportBody']))
+    elements.append(Paragraph(f"<b>Therapeutic Area:</b> {entities.get('therapeutic_area', 'N/A')}", styles['ReportBody']))
+    elements.append(Paragraph(f"<b>Regions:</b> {', '.join(entities.get('regions', []))}", styles['ReportBody']))
     elements.append(Spacer(1, 0.2 * inch))
     
     elements.append(Paragraph("Executive Summary", styles['SectionHeader']))
@@ -97,7 +97,7 @@ def generate_pdf(summary: str, aggregated_data: Dict[str, Any]) -> str:
                 clean_para = clean_para.lstrip('-•').strip()
                 elements.append(Paragraph(f"• {clean_para}", styles['BulletText']))
             else:
-                elements.append(Paragraph(clean_para, styles['BodyText']))
+                elements.append(Paragraph(clean_para, styles['ReportBody']))
     elements.append(Spacer(1, 0.2 * inch))
     
     worker_results = aggregated_data.get("worker_results", {})
