@@ -1,0 +1,43 @@
+{
+  "drugs": [
+    {
+      "name": "Drug X",
+      "therapeutic_area": "oncology",
+      "total_trials": 45,
+      "trials": {
+        "phase_1": 10,
+        "phase_2": 20,
+        "phase_3": 12,
+        "phase_4": 3
+      },
+      "completion_rate": 0.78,
+      "competitive_trials": 23
+    },
+    {
+      "name": "Drug A",
+      "therapeutic_area": "cardiology",
+      "total_trials": 32,
+      "trials": {
+        "phase_1": 8,
+        "phase_2": 12,
+        "phase_3": 9,
+        "phase_4": 3
+      },
+      "completion_rate": 0.82,
+      "competitive_trials": 15
+    },
+    {
+      "name": "Drug M",
+      "therapeutic_area": "neurology",
+      "total_trials": 28,
+      "trials": {
+        "phase_1": 6,
+        "phase_2": 10,
+        "phase_3": 8,
+        "phase_4": 4
+      },
+      "completion_rate": 0.71,
+      "competitive_trials": 19
+    }
+  ]
+}

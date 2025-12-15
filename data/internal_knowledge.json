@@ -1,0 +1,25 @@
+{
+  "drugs": [
+    {
+      "name": "Drug X",
+      "rd_budget": 45000000,
+      "capacity_units": 500000,
+      "forecast_2025": 120000000,
+      "priority": "high"
+    },
+    {
+      "name": "Drug A",
+      "rd_budget": 32000000,
+      "capacity_units": 350000,
+      "forecast_2025": 85000000,
+      "priority": "medium"
+    },
+    {
+      "name": "Drug M",
+      "rd_budget": 55000000,
+      "capacity_units": 420000,
+      "forecast_2025": 95000000,
+      "priority": "high"
+    }
+  ]
+}

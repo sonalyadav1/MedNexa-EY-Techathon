@@ -1,0 +1,10 @@
+drug_name,region,import_kg,export_kg,tariff_pct,barriers
+Drug X,US,5000,3000,0.05,None
+Drug X,EU,4500,2900,0.08,Regulatory delays
+Drug X,APAC,3000,3000,0.03,None
+Drug A,US,3500,2000,0.04,None
+Drug A,EU,2800,1500,0.06,Documentation requirements
+Drug A,APAC,2200,1800,0.02,None
+Drug M,US,4200,2800,0.05,None
+Drug M,EU,3800,2200,0.07,Clinical trial requirements
+Drug M,APAC,2500,2000,0.03,Import licensing delays

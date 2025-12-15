@@ -1,0 +1,36 @@
+{
+  "drugs": [
+    {
+      "name": "Drug X",
+      "therapeutic_area": "oncology",
+      "active_patents": 12,
+      "expiring_patents": [
+        {"id": "US123456", "expiry": "2027-03-15"},
+        {"id": "EU789012", "expiry": "2028-06-20"}
+      ],
+      "competitor_filings": 8,
+      "exclusivity_years": 5
+    },
+    {
+      "name": "Drug A",
+      "therapeutic_area": "cardiology",
+      "active_patents": 8,
+      "expiring_patents": [
+        {"id": "US234567", "expiry": "2026-09-01"}
+      ],
+      "competitor_filings": 5,
+      "exclusivity_years": 3
+    },
+    {
+      "name": "Drug M",
+      "therapeutic_area": "neurology",
+      "active_patents": 15,
+      "expiring_patents": [
+        {"id": "US345678", "expiry": "2029-12-10"},
+        {"id": "EU456789", "expiry": "2030-02-28"}
+      ],
+      "competitor_filings": 12,
+      "exclusivity_years": 7
+    }
+  ]
+}

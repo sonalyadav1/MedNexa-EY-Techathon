@@ -1,0 +1,28 @@
+{
+  "drugs": [
+    {
+      "name": "Drug X",
+      "therapeutic_area": "oncology",
+      "sentiment": 0.72,
+      "news_count": 34,
+      "regulatory": ["FDA fast-track designation granted", "EMA priority review ongoing"],
+      "rumors": ["Potential acquisition by BigPharma Inc", "Partnership discussions with Asian distributors"]
+    },
+    {
+      "name": "Drug A",
+      "therapeutic_area": "cardiology",
+      "sentiment": 0.65,
+      "news_count": 22,
+      "regulatory": ["FDA approval expected Q2 2025"],
+      "rumors": ["Generic competition anticipated by 2027"]
+    },
+    {
+      "name": "Drug M",
+      "therapeutic_area": "neurology",
+      "sentiment": 0.81,
+      "news_count": 45,
+      "regulatory": ["Breakthrough therapy designation", "Accelerated approval pathway"],
+      "rumors": ["Positive Phase 3 results expected", "Premium pricing strategy being considered"]
+    }
+  ]
+}
