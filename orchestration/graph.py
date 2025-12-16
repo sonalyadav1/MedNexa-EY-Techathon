@@ -1,4 +1,6 @@
 from typing import Dict, Any
+import time
+import random
 from langgraph.graph import StateGraph, END
 from langgraph.graph.state import CompiledStateGraph
 
@@ -87,14 +89,51 @@ def aggregator_node(state: AgentState) -> AgentState:
 
 def gemini_node(state: AgentState) -> AgentState:
     print("[Gemini Summarizer] Generating executive summary...")
+    # Small thinking delay to make demo output feel like it's being generated
+    delay = random.uniform(1.8, 3.2)
+    print(f"[Gemini Summarizer] Thinking for {delay:.1f}s...")
+    # If the user's query explicitly asks about HER2+ in India, return
+    # a deterministic, hardcoded mock summary for demo/video purposes.
+    query = (state.get("user_query") or "").lower()
+    if "her2" in query and "india" in query:
+        time.sleep(delay)
+        state["summary"] = (
+            "Executive Report: HER2+ Breast Cancer — India (Mock Data)\n\n"
+            "1. Executive Summary:\n"
+            "Based on aggregated mock datasets for HER2+ breast cancer in India, there is a clear unmet need for\nimproved access to targeted HER2 therapies, better CNS-active agents, and earlier diagnosis. Market signals\nindicate growing adoption of biosimilars and increasing clinical development activity across domestic and\nmultinational sponsors.\n\n"
+            "2. Key Findings:\n"
+            "- Market Size (India, 2025 est.): ~$320M USD; projected CAGR: 9.1% through 2030.\n"
+            "- Payer & Access: High out-of-pocket burden; limited reimbursement in tertiary centers.\n"
+            "- Competitors: Trastuzumab originator and 3 approved biosimilars dominate share; newer ADCs limited.\n"
+            "- Clinical Trials: 17 active HER2+ trials with notable sponsors (Roche, Biocon); 4 Phase III studies recruiting in India.\n"
+            "- Patents: Two notable patents tracked (mock): IN-RA-12345 (Roche) expiring 2026-11-15; IN-RA-54321 (Biocon) expiring 2027-04-10.\n\n"
+            "3. Clinical Trials (selected, mock):\n"
+            "- NCT04512345 (Phase 3) — Sponsor: Roche — Indication: HER2+ metastatic — Status: Recruiting — Sites: 12 (India).\n"
+            "- NCT04876543 (Phase 2) — Sponsor: Biocon — Indication: HER2+ adjuvant — Status: Active — Sites: 8 (India).\n\n"
+            "4. Patent & IP Landscape (mock):\n"
+            "- Expiring patents create biosimilar opportunities; freedom-to-operate analysis recommended for region-specific manufacturing.\n\n"
+            "5. Unmet Needs & Opportunities:\n"
+            "- Affordable access to trastuzumab and next-generation HER2 agents across tier-2/3 cities.\n"
+            "- Development of CNS-penetrant HER2 therapies to address brain metastases.\n"
+            "- Local manufacturing and biosimilar scale-up to reduce cost barriers.\n\n"
+            "6. Recommendations (mock):\n"
+            "- Prioritize partnerships with Indian contract manufacturers to improve supply and pricing.\n"
+            "- Invest in pragmatic trials and real-world evidence to support reimbursement discussions.\n"
+            "- Monitor patent cliffs and prepare biosimilar development strategies.\n"
+            "\n" 
+        )
+        return state
+
+    # Default behaviour: call the real summarizer
     gemini_output = summarize(state["aggregated_data"])
-    state["summary"] = gemini_output["summary"]
+    state["summary"] = gemini_output.get("summary") if isinstance(gemini_output, dict) else gemini_output
     return state
 
 
 def pdf_generator_node(state: AgentState) -> AgentState:
     print("[PDF Generator] Creating report...")
     pdf_path = generate_pdf(state["summary"], state["aggregated_data"])
+    print(f"[PDF Generator] PDF generated at: {pdf_path}")
     state["pdf_path"] = pdf_path
     return state
 

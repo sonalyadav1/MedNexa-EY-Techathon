@@ -2,6 +2,7 @@ import os
 from datetime import datetime
 from typing import Dict, Any, Optional, List
 from pathlib import Path
+import time
 
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
@@ -53,7 +54,7 @@ def generate_pdf(summary: str, aggregated_data: Dict[str, Any]) -> str:
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    filename = f"pharma_portfolio_report_{timestamp}.pdf"
+    filename = f"MedNexa_Report_{timestamp}.pdf"
     filepath = OUTPUT_DIR / filename
     
     doc = SimpleDocTemplate(
@@ -68,7 +69,7 @@ def generate_pdf(summary: str, aggregated_data: Dict[str, Any]) -> str:
     styles = get_styles()
     elements = []
     
-    elements.append(Paragraph("Pharmaceutical Portfolio Analysis Report", styles['ReportTitle']))
+    elements.append(Paragraph("MedNexa Report", styles['ReportTitle']))
     elements.append(Paragraph(
         f"Generated: {datetime.now().strftime('%B %d, %Y at %H:%M')}",
         styles['MetaInfo']
@@ -210,6 +211,26 @@ def generate_pdf(summary: str, aggregated_data: Dict[str, Any]) -> str:
     elements.append(Spacer(1, 0.3 * inch))
     elements.append(Paragraph("--- End of Report ---", styles['MetaInfo']))
     
-    doc.build(elements)
-    
-    return str(filepath)
+    def _add_metadata(canvas_obj, doc_obj):
+        try:
+            canvas_obj.setTitle("MedNexa Report")
+            canvas_obj.setAuthor("MedNexa")
+            canvas_obj.setSubject("MedNexa - Pharmaceutical Portfolio Analysis")
+        except Exception:
+            pass
+
+    doc.build(elements, onFirstPage=_add_metadata)
+    # ensure file was written to disk before returning
+    max_attempts = 5
+    attempt = 0
+    while attempt < max_attempts:
+        if filepath.exists() and filepath.stat().st_size > 0:
+            print(f"[generate_pdf] Returning PDF path: {filepath.resolve()}")
+            return str(filepath.resolve())
+        attempt += 1
+        print(f"[generate_pdf] Waiting for file to appear (attempt {attempt})...")
+        time.sleep(0.2)
+
+    # If we reach here, file was not observed; raise an error to aid debugging
+    print(f"[generate_pdf] ERROR: PDF file not found after {max_attempts} attempts: {filepath}")
+    raise FileNotFoundError(f"Generated PDF not found: {filepath}")

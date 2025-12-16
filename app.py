@@ -1,6 +1,7 @@
 import os
 import sys
 from dotenv import load_dotenv
+from pathlib import Path
 
 load_dotenv()
 
@@ -71,3 +72,26 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+def run_query(query: str) -> dict:
+    """
+    Runs the workflow for a given query and returns a dictionary
+    containing summary and pdf_path.
+    """
+    result = run_workflow(query)
+    pdf_path = result.get("pdf_path", "")
+    import os
+    pdf_filename = os.path.basename(pdf_path) if pdf_path else ""
+    # verify the file exists before returning the filename
+    if pdf_filename:
+        candidate = Path(pdf_path)
+        if not candidate.exists():
+            print(f"[run_query] Warning: expected PDF not found at {pdf_path}")
+            pdf_filename = ""
+
+    return {
+        "summary": result.get("summary", ""),
+        "pdfFilename": pdf_filename
+    }

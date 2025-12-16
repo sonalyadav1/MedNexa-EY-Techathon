@@ -2,19 +2,19 @@ import os
 import json
 from datetime import datetime
 from typing import Dict, Any
-from google import genai
+import google.generativeai as genai
 
 
-def get_gemini_client():
+
+def configure_gemini():
     api_key = os.environ.get("GEMINI_API_KEY")
     if not api_key:
         raise ValueError("GEMINI_API_KEY environment variable is not set")
-    return genai.Client(api_key=api_key)
+    genai.configure(api_key=api_key)
 
 
 def summarize(aggregated_data: Dict[str, Any]) -> Dict[str, Any]:
-    client = get_gemini_client()
-    
+    configure_gemini()
     prompt = f"""You are a pharmaceutical portfolio analyst. Summarize the following data into an executive report.
 
 STRICT RULES:
@@ -29,14 +29,9 @@ STRICT RULES:
 Data:
 {json.dumps(aggregated_data, indent=2)}
 """
-    
-    response = client.models.generate_content(
-        model="gemini-2.0-flash",
-        contents=prompt
-    )
-    
-    summary_text = response.text
-    
+    model = genai.GenerativeModel('gemini-2.0-flash')
+    response = model.generate_content(prompt)
+    summary_text = response.text if hasattr(response, 'text') else str(response)
     output = {
         "summary": summary_text,
         "gemini_model": "gemini-2.0-flash",
