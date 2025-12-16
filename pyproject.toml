@@ -12,4 +12,5 @@ dependencies = [
     "pydantic>=2.12.5",
     "python-dotenv>=1.2.1",
     "reportlab>=4.4.6",
+    "uvicorn[standard]",
 ]
